@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #000000; /* Pure black background */
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10; /* Canvas above content */
+  background: transparent; /* No golden tint, pure transparent */
+  pointer-events: none; /* Allows interaction with elements below */
+}
+
+.content {
+  text-align: center;
+  z-index: 5; /* Content below canvas */
+}
+
+#logo {
+  max-width: 300px; /* Adjust as per your logo */
+  height: auto;
+  margin-bottom: 20px; /* Space between logo and text */
+  filter: invert(100%); /* Yeh black ko white kar dega */
+}
+
+h1 {
+  font-size: 9rem;
+
+}
+
+.hover-effect {
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.5s ease-in-out; /* Smooth transition */
+}
+
+.hover-effect:hover {
+  opacity: 1; /* Fully visible when hovered */
+}
