@@ -11,6 +11,7 @@ body {
   color: #ffffff;
   font-family: 'Arial', sans-serif;
   display: flex;
+  flex-direction: column; /* Stack elements vertically */
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -25,9 +26,24 @@ canvas {
   pointer-events: none; /* Allows interaction with elements below */
 }
 
+#matter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Space between matter and logo */
+}
+
+.matter {
+  width: 300px;
+  height: 200px;
+}
+
 .content {
   text-align: center;
   z-index: 5; /* Content below canvas */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #logo {
@@ -37,9 +53,16 @@ canvas {
   filter: invert(100%); /* Yeh black ko white kar dega */
 }
 
+.hover-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 h1 {
   font-size: 9rem;
-
+  margin: 0 5px; /* Space between letters */
 }
 
 .hover-effect {
