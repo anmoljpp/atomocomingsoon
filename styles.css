@@ -30,12 +30,12 @@ canvas {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px; /* Space between matter and logo */
+  margin-bottom: 2vh; /* Space between matter and logo */
 }
 
 .matter {
-  width: 300px;
-  height: 200px;
+  width: 20vmin; /* Responsive size based on viewport */
+  height: 20vmin; /* Responsive size based on viewport */
 }
 
 .content {
@@ -47,9 +47,9 @@ canvas {
 }
 
 #logo {
-  max-width: 300px; /* Adjust as per your logo */
+  max-width: 30vmin; /* Responsive size based on viewport */
   height: auto;
-  margin-bottom: 20px; /* Space between logo and text */
+  margin-bottom: 2vh; /* Space between logo and text */
   filter: invert(100%); /* Yeh black ko white kar dega */
 }
 
@@ -61,8 +61,8 @@ canvas {
 }
 
 h1 {
-  font-size: 9rem;
-  margin: 0 5px; /* Space between letters */
+  font-size: 10vmin; /* Responsive font size based on viewport */
+  margin: 0 1vmin; /* Space between letters */
 }
 
 .hover-effect {
@@ -72,4 +72,59 @@ h1 {
 
 .hover-effect:hover {
   opacity: 1; /* Fully visible when hovered */
+}
+
+/* Hide resp1 by default on desktop */
+.resp1 {
+  display: none;
+}
+
+/* Media Queries for Tablets and Mobile */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 8vmin; /* Smaller font size for smaller screens */
+  }
+
+  .matter {
+    width: 25vmin; /* Larger size for smaller screens */
+    height: 25vmin;
+  }
+
+  #logo {
+    max-width: 40vmin; /* Larger size for smaller screens */
+  }
+
+  /* Hide individual letters on tablets and mobile */
+  .resp {
+    display: none;
+  }
+
+  /* Show COMING SOON text on tablets and mobile */
+  .resp1 {
+    display: block;
+    text-align: center;
+    font-size: 8vmin; /* Adjust font size for smaller screens */
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 6vmin; /* Even smaller font size for mobile devices */
+    margin: 0 0.5vmin; /* Reduce space between letters */
+  }
+
+  .matter {
+    width: 30vmin; /* Larger size for very small screens */
+    height: 30vmin;
+  }
+
+  #logo {
+    max-width: 50vmin; /* Larger size for very small screens */
+  }
+
+  /* Adjust COMING SOON text for mobile */
+  .resp1 {
+    font-size: 9vmin; /* Smaller font size for mobile */
+  }
 }

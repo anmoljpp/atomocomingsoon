@@ -123,6 +123,22 @@ window.addEventListener('resize', () => {
     init();
 });
 
+const matterImage = document.getElementById('matterImage');
+let currentImageIndex = 1; // Start with the first image
+const totalImages = 6; // Total number of images
+
+// Function to update the image source
+function updateImage() {
+  currentImageIndex = (currentImageIndex % totalImages) + 1; // Cycle through images 1 to 6
+  matterImage.src = `image${currentImageIndex}.png`; // Update the image source
+}
+
+// Add an event listener for when the image disappears (opacity becomes 0)
+matterImage.addEventListener('transitionend', (event) => {
+  if (event.propertyName === 'opacity' && matterImage.style.opacity === '0') {
+    updateImage(); // Change to the next image
+  }
+});
 
 
 init();
