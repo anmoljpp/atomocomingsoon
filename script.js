@@ -73,7 +73,7 @@ function init() {
 
     for (let i = 0; i < particlesPerPart; i++) {
         const col = i % cols;
-        const row = Math.floor(i / cols) % rows;
+        const row = Math.floor(i / cols);
         const x = col * gridSize + (Math.random() - 0.5) * gridSize;
         const y = row * gridSize + (Math.random() - 0.5) * gridSize;
         particlesArray.push(new Particle(x, y));
@@ -81,7 +81,7 @@ function init() {
 
     for (let i = 0; i < particlesPerPart; i++) {
         const col = i % cols;
-        const row = Math.floor(i / cols) % rows;
+        const row = Math.floor(i / cols);
         const x = col * gridSize + (Math.random() - 0.5) * gridSize;
         const y = thirdHeight + row * gridSize + (Math.random() - 0.5) * gridSize;
         particlesArray.push(new Particle(x, y));
@@ -89,7 +89,7 @@ function init() {
 
     for (let i = 0; i < particlesPerPart; i++) {
         const col = i % cols;
-        const row = Math.floor(i / cols) % rows;
+        const row = Math.floor(i / cols);
         const x = col * gridSize + (Math.random() - 0.5) * gridSize;
         const y = 2 * thirdHeight + row * gridSize + (Math.random() - 0.5) * gridSize;
         particlesArray.push(new Particle(x, y));
