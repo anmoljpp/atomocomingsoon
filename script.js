@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const particlesArray = [];
-const particlesPerPart = 22000;
+const particlesPerPart = 39000;
 const numberOfParticles = particlesPerPart * 3;
 
 // Define an array of 10 predefined colors
