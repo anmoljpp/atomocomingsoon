@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const particlesArray = [];
-const particlesPerPart = 95000; // 95,000 particles
+const particlesPerPart = 4000; // Reduced to 20,000 particles
 const numberOfParticles = particlesPerPart;
 
 // Define an array of glitter colors (bright and shiny)
@@ -31,12 +31,18 @@ class Particle {
         this.size = Math.random() * 2 + 1; // Random size for glitter effect
         this.color = colors[Math.floor(Math.random() * colors.length)]; // Random glitter color
         this.velocity = { x: 0, y: 0 };
+        this.angle = Math.random() * Math.PI * 2; // Random initial rotation angle
+        this.sparkleSpeed = Math.random() * 0.05 + 0.01; // Speed of sparkling
+        this.brightness = Math.random(); // Random initial brightness
     }
 
     draw() {
-        // Use fillRect for faster rendering
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle); // Rotate the particle
+        ctx.fillStyle = `rgba(255, 223, 0, ${this.brightness})`; // Dynamic brightness
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size); // Use fillRect for faster rendering
+        ctx.restore();
     }
 
     update(mouseX, mouseY) {
@@ -46,7 +52,7 @@ class Particle {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Apply force if mouse is near
-        if (distance < 80) {
+        if (distance < 60) { // Reduced radius from 120 to 60
             const force = 40;
             const angle = Math.atan2(dy, dx);
             this.velocity.x = -Math.cos(angle) * force;
@@ -63,16 +69,44 @@ class Particle {
         const returnSpeed = 0.19;
         this.x += (this.originalX - this.x) * returnSpeed;
         this.y += (this.originalY - this.y) * returnSpeed;
+
+        // Add sparkling effect
+        this.angle += this.sparkleSpeed; // Rotate the particle
+        this.brightness = 0.5 + Math.sin(this.angle) * 0.5; // Vary brightness
     }
 }
 
 function init() {
-    particlesArray.length = 0; // Clear existing particles
-    const gridSize = 10; // Size of each grid cell
+    particlesArray.length = 1; // Clear existing particles
+    const gridSize = 100; // Size of each grid cell
     const cols = Math.floor(canvas.width / gridSize); // Number of columns
     const rows = Math.floor(canvas.height / gridSize); // Number of rows
 
     // Distribute particles evenly across the entire canvas
+    for (let i = 0; i < numberOfParticles; i++) {
+        const col = i % cols; // Column index
+        const row = Math.floor(i / cols) % rows; // Row index
+        const x = col * gridSize + (Math.random() - 0.5) * gridSize; // Random x position
+        const y = row * gridSize + (Math.random() - 0.5) * gridSize; // Random y position
+        particlesArray.push(new Particle(x, y)); // Add particle to the array
+    }
+
+    for (let i = 0; i < numberOfParticles; i++) {
+        const col = i % cols; // Column index
+        const row = Math.floor(i / cols) % rows; // Row index
+        const x = col * gridSize + (Math.random() - 0.5) * gridSize; // Random x position
+        const y = row * gridSize + (Math.random() - 0.5) * gridSize; // Random y position
+        particlesArray.push(new Particle(x, y)); // Add particle to the array
+    }
+
+    for (let i = 0; i < numberOfParticles; i++) {
+        const col = i % cols; // Column index
+        const row = Math.floor(i / cols) % rows; // Row index
+        const x = col * gridSize + (Math.random() - 0.5) * gridSize; // Random x position
+        const y = row * gridSize + (Math.random() - 0.5) * gridSize; // Random y position
+        particlesArray.push(new Particle(x, y)); // Add particle to the array
+    }
+
     for (let i = 0; i < numberOfParticles; i++) {
         const col = i % cols; // Column index
         const row = Math.floor(i / cols) % rows; // Row index
@@ -101,9 +135,17 @@ function animate() {
         particle.draw();
     });
 
-    // Remove old trail positions to keep the trail smooth
-    if (mouseTrail.length > 4) {
+    // Remove old trail positions to keep the trail smooth and short
+    if (mouseTrail.length > 1) { // Reduced trail length from 10 to 5
         mouseTrail.shift();
+    }
+
+    // Fill blank space when the pointer is still
+    if (mouseTrail.length > 0) {
+        const lastPos = mouseTrail[mouseTrail.length - 1];
+        particlesArray.forEach(particle => {
+            particle.update(lastPos.x, lastPos.y);
+        });
     }
 
     requestAnimationFrame(animate);
