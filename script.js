@@ -46,7 +46,7 @@ class Particle {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Apply force if mouse is near
-        if (distance < 120) {
+        if (distance < 80) {
             const force = 40;
             const angle = Math.atan2(dy, dx);
             this.velocity.x = -Math.cos(angle) * force;
@@ -102,7 +102,7 @@ function animate() {
     });
 
     // Remove old trail positions to keep the trail smooth
-    if (mouseTrail.length > 10) {
+    if (mouseTrail.length > 4) {
         mouseTrail.shift();
     }
 
