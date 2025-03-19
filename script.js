@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 const canvas = document.getElementById('sandCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -91,19 +84,37 @@ function init() {
 
 let mouseX = -1000;
 let mouseY = -1000;
+const mouseTrail = []; // Array to store the cursor's path
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update particles based on the cursor's path
+    mouseTrail.forEach((trailPos) => {
+        particlesArray.forEach(particle => {
+            particle.update(trailPos.x, trailPos.y);
+        });
+    });
+
+    // Draw particles
     particlesArray.forEach(particle => {
-        particle.update(mouseX, mouseY);
         particle.draw();
     });
+
+    // Remove old trail positions to keep the trail smooth
+    if (mouseTrail.length > 10) {
+        mouseTrail.shift();
+    }
+
     requestAnimationFrame(animate);
 }
 
 window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
     mouseY = event.clientY;
+
+    // Add the current cursor position to the trail
+    mouseTrail.push({ x: mouseX, y: mouseY });
 
     // Update hover effect dynamically
     const hoverMask = document.querySelector('.hover-mask');
