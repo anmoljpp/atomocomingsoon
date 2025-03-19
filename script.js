@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 const canvas = document.getElementById('sandCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -5,21 +12,21 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const particlesArray = [];
-const particlesPerPart = 39000;
-const numberOfParticles = particlesPerPart * 3;
+const particlesPerPart = 95000; // 95,000 particles
+const numberOfParticles = particlesPerPart;
 
-// Define an array of 10 predefined colors
+// Define an array of glitter colors (bright and shiny)
 const colors = [
-    'rgb(252, 43, 43)',    // Red
-    'rgb(43, 252, 43)',    // Green
-    'rgb(43, 43, 252)',    // Blue
-    'rgb(252, 252, 43)',   // Yellow
-    'rgb(252, 43, 252)',  // Magenta
-    'rgb(43, 252, 252)',   // Cyan
-    'rgb(128, 43, 252)',   // Purple
-    'rgb(252, 128, 43)',   // Orange
-    'rgb(43, 128, 252)',   // Light Blue
-    'rgb(128, 252, 43)'    // Lime Green
+    'rgba(255, 223, 0, 1)',     // Gold (unchanged)
+    'rgba(255, 235, 150, 1)',   // Light Gold
+    'rgba(255, 215, 0, 1)',     // Golden Yellow
+    'rgba(255, 240, 200, 1)',  // Pale Gold
+    'rgba(255, 200, 0, 1)',     // Orange Gold
+    'rgba(255, 225, 50, 1)',   // Bright Gold
+    'rgba(255, 210, 100, 1)',  // Soft Gold
+    'rgba(255, 220, 130, 1)',  // Warm Gold
+    'rgba(255, 230, 160, 1)',  // Muted Gold
+    'rgba(255, 190, 0, 1)'     // Deep Gold
 ];
 
 class Particle {
@@ -28,71 +35,57 @@ class Particle {
         this.originalY = y;
         this.x = x;
         this.y = y;
-        this.size = Math.random() * 2 + 1;
-        // Randomly select a color from the predefined array
-        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.size = Math.random() * 2 + 1; // Random size for glitter effect
+        this.color = colors[Math.floor(Math.random() * colors.length)]; // Random glitter color
         this.velocity = { x: 0, y: 0 };
     }
 
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        // Use fillRect for faster rendering
         ctx.fillStyle = this.color;
-        ctx.fill();
+        ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 
     update(mouseX, mouseY) {
+        // Calculate distance from mouse
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
+        // Apply force if mouse is near
         if (distance < 120) {
-            const force = 20;
+            const force = 40;
             const angle = Math.atan2(dy, dx);
             this.velocity.x = -Math.cos(angle) * force;
             this.velocity.y = -Math.sin(angle) * force;
         }
 
+        // Slow down velocity over time
         this.velocity.x *= 0.95;
         this.velocity.y *= 0.95;
         this.x += this.velocity.x;
         this.y += this.velocity.y;
 
-        const returnSpeed = 0.1;
+        // Return to original position smoothly
+        const returnSpeed = 0.19;
         this.x += (this.originalX - this.x) * returnSpeed;
         this.y += (this.originalY - this.y) * returnSpeed;
     }
 }
 
 function init() {
-    particlesArray.length = 0;
-    const gridSize = 10;
-    const cols = Math.floor(canvas.width / gridSize);
-    const thirdHeight = canvas.height / 3;
-    const rows = Math.floor(thirdHeight / gridSize);
+    particlesArray.length = 0; // Clear existing particles
+    const gridSize = 10; // Size of each grid cell
+    const cols = Math.floor(canvas.width / gridSize); // Number of columns
+    const rows = Math.floor(canvas.height / gridSize); // Number of rows
 
-    for (let i = 0; i < particlesPerPart; i++) {
-        const col = i % cols;
-        const row = Math.floor(i / cols) % rows;
-        const x = col * gridSize + (Math.random() - 0.5) * gridSize;
-        const y = row * gridSize + (Math.random() - 0.5) * gridSize;
-        particlesArray.push(new Particle(x, y));
-    }
-
-    for (let i = 0; i < particlesPerPart; i++) {
-        const col = i % cols;
-        const row = Math.floor(i / cols) % rows;
-        const x = col * gridSize + (Math.random() - 0.5) * gridSize;
-        const y = thirdHeight + row * gridSize + (Math.random() - 0.5) * gridSize;
-        particlesArray.push(new Particle(x, y));
-    }
-
-    for (let i = 0; i < particlesPerPart; i++) {
-        const col = i % cols;
-        const row = Math.floor(i / cols) % rows;
-        const x = col * gridSize + (Math.random() - 0.5) * gridSize;
-        const y = 2 * thirdHeight + row * gridSize + (Math.random() - 0.5) * gridSize;
-        particlesArray.push(new Particle(x, y));
+    // Distribute particles evenly across the entire canvas
+    for (let i = 0; i < numberOfParticles; i++) {
+        const col = i % cols; // Column index
+        const row = Math.floor(i / cols) % rows; // Row index
+        const x = col * gridSize + (Math.random() - 0.5) * gridSize; // Random x position
+        const y = row * gridSize + (Math.random() - 0.5) * gridSize; // Random y position
+        particlesArray.push(new Particle(x, y)); // Add particle to the array
     }
 }
 
@@ -122,24 +115,6 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
     init();
 });
-
-const matterImage = document.getElementById('matterImage');
-let currentImageIndex = 1; // Start with the first image
-const totalImages = 6; // Total number of images
-
-// Function to update the image source
-function updateImage() {
-  currentImageIndex = (currentImageIndex % totalImages) + 1; // Cycle through images 1 to 6
-  matterImage.src = `image${currentImageIndex}.png`; // Update the image source
-}
-
-// Add an event listener for when the image disappears (opacity becomes 0)
-matterImage.addEventListener('transitionend', (event) => {
-  if (event.propertyName === 'opacity' && matterImage.style.opacity === '0') {
-    updateImage(); // Change to the next image
-  }
-});
-
 
 init();
 animate();

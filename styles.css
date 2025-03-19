@@ -112,7 +112,7 @@ h1 {
   h1 {
     font-size: 6vmin; /* Even smaller font size for mobile devices */
     margin: 0 0.5vmin; /* Reduce space between letters */
-  }
+  }Z
 
   .matter {
     width: 30vmin; /* Larger size for very small screens */
